@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: layoff-pulse-backend
+    runtime: python
+    plan: free
+    branch: main
+    buildCommand: pip install uv && uv sync --frozen --no-dev
+    startCommand: uv run uvicorn app.main:app --host 0.0.0.0 --port $PORT --app-dir backend
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      # Comma-separated list of allowed frontend origins (CORS) -- see backend/app/config.py.
+      - key: FRONTEND_ORIGINS
+        value: https://layoff-analysis.vercel.app,http://localhost:3000
